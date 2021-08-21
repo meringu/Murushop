@@ -5,6 +5,8 @@ import { useDB } from 'react-pouchdb'
 import Import from '../components/Import'
 
 import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+import Spinner from 'react-bootstrap/Spinner'
 
 const Library = () => {
   const db = useDB()
@@ -29,7 +31,7 @@ const Library = () => {
   }, [])
 
   return (
-    <>
+    <Container>
       <Import />
       <p>Images:</p>
       <ul>
@@ -50,10 +52,10 @@ const Library = () => {
               </Button>
             </li>
           ))
-          : 'loading...'
+          : <Spinner animation="border" />
         }
       </ul>
-    </>
+    </Container>
   )
 }
 

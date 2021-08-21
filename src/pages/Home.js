@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 
 import { useDB } from 'react-pouchdb'
 
+import Container from 'react-bootstrap/Container'
+import Spinner from 'react-bootstrap/Spinner'
+import Table from 'react-bootstrap/Table'
+
 const Home = () => {
   const db = useDB()
 
@@ -19,9 +23,27 @@ const Home = () => {
   }, [])
 
   return (
-    <p>
-      {info ? JSON.stringify(info) : 'loading...'}
-    </p>
+    <Container>
+      {info
+        ? <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(info).sort().map(key =>
+              <tr key={key}>
+                <td>{key}</td>
+                <td>{JSON.stringify(info[key])}</td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+        : <Spinner animation="border" />
+      }
+    </Container>
   )
 }
 
