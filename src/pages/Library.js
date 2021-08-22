@@ -59,6 +59,7 @@ const Images = () => {
                 >
                   <Image id={image._id} />
                 </Suspense>
+                <Card.Footer className="text-muted">{image.name}</Card.Footer>
               </Card>
             </LinkContainer>
           </div>
