@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode=production",
+    "build": "webpack --mode=production && echo '/* /index.html 200' > build/_redirects",
     "start": "webpack-dev-server --mode=development --open"
   },
   "dependencies": {
