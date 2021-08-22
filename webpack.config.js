@@ -9,7 +9,8 @@ module.exports = {
     clean: true
   },
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: true,
+    hot: true
   },
   optimization: {
     splitChunks: {
@@ -25,11 +26,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader'
         }
+      },
+      {
+        test: /\.js$/,
+        enforce: 'pre',
+        use: ['source-map-loader']
       },
       {
         test: /\.css$/,
@@ -46,7 +52,9 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: './src/index.html'
+      template: './src/index.html',
+      inject: 'body',
+      publicPath: '/'
     }),
     new ESLintPlugin()
   ]

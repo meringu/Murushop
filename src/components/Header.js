@@ -14,8 +14,7 @@ const Header = () => (
       </LinkContainer>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
-        <Nav className="me-auto">
-
+        <Nav>
           <LinkContainer to="/library">
             <Nav.Link href="/library">Library</Nav.Link>
           </LinkContainer>

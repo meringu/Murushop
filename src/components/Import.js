@@ -6,12 +6,16 @@ import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
 import Image from 'react-bootstrap/Image'
+import Spinner from 'react-bootstrap/Spinner'
 
 const Import = () => {
   const db = useDB()
 
+  const [importing, setImporting] = useState(false)
+
   const [show, setShow] = useState(false)
   const handleClose = () => {
+    setImporting(false)
     setPreview(null)
     setShow(false)
   }
@@ -31,6 +35,8 @@ const Import = () => {
   }
 
   const handleSubmit = (event) => {
+    setImporting(true)
+
     event.preventDefault()
 
     const form = event.currentTarget
@@ -41,12 +47,21 @@ const Import = () => {
     }
 
     const name = form.elements.fileInput.files[0].name
+
     const reader = new FileReader()
     reader.onload = () => {
-      db.post({ name: name, type: 'image', data: reader.result })
-      setShow(false)
+      db.post({
+        name: name,
+        type: 'image',
+        _attachments: {
+          original: {
+            content_type: 'image/jpeg',
+            data: btoa(reader.result)
+          }
+        }
+      }).then(handleClose)
     }
-    reader.readAsDataURL(form.elements.fileInput.files[0])
+    reader.readAsBinaryString(form.elements.fileInput.files[0])
   }
 
   return (
@@ -87,8 +102,21 @@ const Import = () => {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            <Button variant="primary" type="submit" disabled={preview === null}>
-              Import
+            <Button variant="primary" type="submit" disabled={preview === null || importing}>
+              {
+                importing
+                  ? <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    <span className="visually-hidden">Loading...</span>
+                  </>
+                  : 'Import'
+              }
             </Button>
           </Modal.Footer>
         </Form>
